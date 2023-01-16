@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="database\bison_extention\parser.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="database\bison_extention\scanner.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="database\rule_wrapper.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="database\bison_driver.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\gui_wrapper\wrapper.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\menu_area\menu.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui_demo.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui_draw.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui_impl_dx9.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui_impl_win32.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui_tables.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\imgui\imgui_widgets.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\menu_area\blur\post_processing.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="scanner\file_scan.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="scanner\utils\scan_utils.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="notifier\notify.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="notifier\windows_api\wintoastlib.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="database\bison_extention\location.hh" />
+    <ClInclude Include="database\bison_extention\parser.hpp" />
+    <ClInclude Include="database\bison_extention\position.hh" />
+    <ClInclude Include="database\bison_extention\scanner.h" />
+    <ClInclude Include="database\bison_extention\stack.hh" />
+    <ClInclude Include="database\rule_wrapper.h" />
+    <ClInclude Include="database\bison_driver.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="libs\imgui\imgui_freetype.h" />
+    <ClInclude Include="gui\gui_wrapper\wrapper.h" />
+    <ClInclude Include="gui\menu_area\menu.h" />
+    <ClInclude Include="libs\imgui\imfilebrowser.h" />
+    <ClInclude Include="libs\imgui\imconfig.h" />
+    <ClInclude Include="libs\imgui\imgui.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_dx9.h" />
+    <ClInclude Include="libs\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="libs\imgui\imgui_internal.h" />
+    <ClInclude Include="libs\imgui\imstb_rectpack.h" />
+    <ClInclude Include="libs\imgui\imstb_textedit.h" />
+    <ClInclude Include="libs\imgui\imstb_truetype.h" />
+    <ClInclude Include="gui\menu_area\blur\blur_shaders\blur_x.h" />
+    <ClInclude Include="gui\menu_area\blur\blur_shaders\blur_y.h" />
+    <ClInclude Include="gui\menu_area\blur\post_processing.h" />
+    <ClInclude Include="gui\menu_area\custom_elements\subtab.h" />
+    <ClInclude Include="gui\gui_wrapper\fonts.h" />
+    <ClInclude Include="gui\gui_wrapper\images.h" />
+    <ClInclude Include="scanner\file_scan.h" />
+    <ClInclude Include="scanner\utils\scan_utils.h" />
+    <ClInclude Include="notifier\notify.h" />
+    <ClInclude Include="notifier\windows_api\wintoastlib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Bison Include="database\bison_extention\parser.y" />
+  </ItemGroup>
+</Project>

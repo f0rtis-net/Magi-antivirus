@@ -51,8 +51,7 @@ namespace Melhior
 		unsigned int m_location;
 	};
 
-	inline database_parser* g_database = new database_parser( );
-
+	inline const auto g_database = std::make_unique<database_parser>( );
 }
 
 #endif // INTERPRETER_H

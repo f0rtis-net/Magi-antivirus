@@ -64,6 +64,12 @@
     <ClCompile Include="notifier\windows_api\wintoastlib.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="quarantine\quarantine.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\json\jsoncpp.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database\bison_extention\location.hh" />
@@ -96,6 +102,9 @@
     <ClInclude Include="scanner\utils\scan_utils.h" />
     <ClInclude Include="notifier\notify.h" />
     <ClInclude Include="notifier\windows_api\wintoastlib.h" />
+    <ClInclude Include="quarantine\quarantine.h" />
+    <ClInclude Include="libs\json\json.h" />
+    <ClInclude Include="libs\json\json-forwards.h" />
   </ItemGroup>
   <ItemGroup>
     <Bison Include="database\bison_extention\parser.y" />

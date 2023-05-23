@@ -178,21 +178,22 @@ void scan_target( const std::string& path_to_target )
 	{
 		if ( catch_target( file, file_size, rule ) )
 		{
+			//fuck off
+			UnmapViewOfFile( file );
+			CloseHandle( hMap );
+			CloseHandle( h_file );
 			MUTEX_LOCK;
-			//catch to quarantine
+			--g_file_scanner->target_ammount;
+			MUTEX_UNLOCK;
+
+			std::filesystem::path p( path_to_target );
+			MUTEX_LOCK;
+			g_quarantine->handle_infected( p.filename( ).string( ), path_to_target, rule.name( ) );
 			++g_file_scanner->valid_targets;
 			MUTEX_UNLOCK;
 			break;
 		}
 	}
-
-	//fuck off
-	UnmapViewOfFile( file );
-	CloseHandle( hMap );
-	CloseHandle( h_file );
-	MUTEX_LOCK;
-	--g_file_scanner->target_ammount;
-	MUTEX_UNLOCK;
 }
 
 void c_file_scanner::main_thread( const std::vector<std::filesystem::path>& path_to_scan )
@@ -224,6 +225,7 @@ void c_file_scanner::main_thread( const std::vector<std::filesystem::path>& path
 	scanner_started = false;
 
 	g_globals->notified_tabs[ 0 ] = true;
+	g_globals->notified_tabs[ 1 ] = true;
 
 	std::string base = "Scan completed! ";
 
@@ -231,4 +233,6 @@ void c_file_scanner::main_thread( const std::vector<std::filesystem::path>& path
 		base += "Some files are infected!";
 
 	notify::create_event( base, L"Tap to see more info." );
+
+	g_quarantine->save_database( );
 }

@@ -5281,9 +5281,12 @@ bool ImGui::MainChildEx( const char* name, ImGuiID id, const ImVec2& size_arg, b
 
 	parent_window->DrawList->AddRectFilled( parent_window->DC.CursorPos, End, ImColor( 25, 35, 70 ), 4.f, ImDrawCornerFlags_All );
 
-	parent_window->DrawList->AddRectFilled( TitleStart + ImVec2( start_draw_x, -15 ), TitleStart + ImVec2( start_draw_x, -7 ) + name_size, ImColor( 68, 63, 214 ), 4.f, ImDrawCornerFlags_All );
+	if ( !border )
+	{
+		parent_window->DrawList->AddRectFilled( TitleStart + ImVec2( start_draw_x, -15 ), TitleStart + ImVec2( start_draw_x, -7 ) + name_size, ImColor( 68, 63, 214 ), 4.f, ImDrawCornerFlags_All );
 
-	parent_window->DrawList->AddText( TitleStart + ImVec2( start_draw_x + 5, -5 ), ImColor( 226, 226, 226, int( 255 * g.Style.Alpha ) ), name );
+		parent_window->DrawList->AddText( TitleStart + ImVec2( start_draw_x + 5, -5 ), ImColor( 226, 226, 226, int( 255 * g.Style.Alpha ) ), name );
+	}
 
 	return ret;
 }
@@ -6987,7 +6990,7 @@ bool ImGui::Begin( const char* name, bool* p_open, ImGuiWindowFlags flags )
 	}
 
 	return !window->SkipItems;
-}
+	}
 
 void ImGui::End( )
 {
@@ -8182,13 +8185,13 @@ bool ImGui::ItemAdd( const ImRect& bb, ImGuiID id, const ImRect* nav_bb_arg, ImG
 	if ( IsMouseHoveringRect( bb.Min, bb.Max ) )
 		window->DC.LastItemStatusFlags |= ImGuiItemStatusFlags_HoveredRect;
 	return true;
-}
+	}
 
-// Gets back to previous line and continue with horizontal layout
-//      offset_from_start_x == 0 : follow right after previous item
-//      offset_from_start_x != 0 : align to specified x position (relative to window/group left)
-//      spacing_w < 0            : use default spacing if pos_x == 0, no spacing if pos_x != 0
-//      spacing_w >= 0           : enforce spacing amount
+	// Gets back to previous line and continue with horizontal layout
+	//      offset_from_start_x == 0 : follow right after previous item
+	//      offset_from_start_x != 0 : align to specified x position (relative to window/group left)
+	//      spacing_w < 0            : use default spacing if pos_x == 0, no spacing if pos_x != 0
+	//      spacing_w >= 0           : enforce spacing amount
 void ImGui::SameLine( float offset_from_start_x, float spacing_w )
 {
 	ImGuiWindow* window = GetCurrentWindow( );

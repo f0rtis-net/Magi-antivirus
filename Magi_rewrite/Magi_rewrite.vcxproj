@@ -168,9 +168,11 @@
     <ClCompile Include="libs\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="libs\imgui\imgui_tables.cpp" />
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="libs\json\jsoncpp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="notifier\notify.cpp" />
     <ClCompile Include="notifier\windows_api\wintoastlib.cpp" />
+    <ClCompile Include="quarantine\quarantine.cpp" />
     <ClCompile Include="scanner\file_scan.cpp" />
     <ClCompile Include="scanner\utils\scan_utils.cpp" />
   </ItemGroup>
@@ -201,8 +203,11 @@
     <ClInclude Include="libs\imgui\imstb_rectpack.h" />
     <ClInclude Include="libs\imgui\imstb_textedit.h" />
     <ClInclude Include="libs\imgui\imstb_truetype.h" />
+    <ClInclude Include="libs\json\json-forwards.h" />
+    <ClInclude Include="libs\json\json.h" />
     <ClInclude Include="notifier\notify.h" />
     <ClInclude Include="notifier\windows_api\wintoastlib.h" />
+    <ClInclude Include="quarantine\quarantine.h" />
     <ClInclude Include="scanner\file_scan.h" />
     <ClInclude Include="scanner\utils\scan_utils.h" />
   </ItemGroup>

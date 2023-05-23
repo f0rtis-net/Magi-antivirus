@@ -15,7 +15,6 @@ enum scan_phases_e
 class c_file_scanner
 {
 	bool scanner_started;
-	//сделать в глобалах пинг вкладки в которую нужен эвент(в данном случае когда скан завершен)
 	int scan_timer;
 	int scan_phase;
 	void main_thread( const std::vector<std::filesystem::path>& path_to_scan );
@@ -31,4 +30,4 @@ public:
 	void scan_trampoline( const std::vector<fs::path>& path_to_scan );
 };
 
-inline c_file_scanner* g_file_scanner = new c_file_scanner( );
+inline const auto g_file_scanner = std::make_unique<c_file_scanner>( );

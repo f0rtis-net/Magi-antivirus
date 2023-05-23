@@ -40,9 +40,7 @@ void database_parser::process_database( )
 {
 	if ( !fs::exists( "./mdb" ) )
 	{
-		//here we can send to-server request for updating our database.
-		// & create path
-		throw( "No valid path for database" );
+		std::filesystem::create_directory( "./mdb" );
 	}
 
 	m_rules.clear( );
@@ -59,9 +57,6 @@ void database_parser::process_database( )
 			++db_files_count;
 		}
 	}
-
-	//честно говоря в душе не ебу как это будет себя в многопотоке вести, но пока похер
-	//cout << this->parse( "0 and 1" );
 }
 
 int database_parser::parse( std::istream* file_handle )

@@ -525,14 +525,34 @@ inline void ImGui::FileBrowser::Display( )
 
 			if ( strlen( search_buffer ) > 0 )
 			{
-				if ( rsc.name.string( ).find( search_buffer ) == std::string::npos )
+				std::string first = rsc.name.string( );
+				std::string second = search_buffer;
+				transform( first.begin( ), first.end( ), first.begin( ), ::tolower );
+				transform( second.begin( ), second.end( ), second.begin( ), ::tolower );
+
+				if ( first.find( second ) == std::string::npos )
 					continue;
 			}
 
 			bool selected = selectedFilenames_.find( rsc.name )
 				!= selectedFilenames_.end( );
 
-			if ( Selectable( rsc.showName.c_str( ), selected,
+			std::string codepage_str = rsc.showName;
+			int size = MultiByteToWideChar( CP_ACP, MB_COMPOSITE, codepage_str.c_str( ),
+				codepage_str.length( ), nullptr, 0 );
+			std::wstring utf16_str( size, '\0' );
+			MultiByteToWideChar( CP_ACP, MB_COMPOSITE, codepage_str.c_str( ),
+				codepage_str.length( ), &utf16_str[ 0 ], size );
+
+			int utf8_size = WideCharToMultiByte( CP_UTF8, 0, utf16_str.c_str( ),
+				utf16_str.length( ), nullptr, 0,
+				nullptr, nullptr );
+			std::string utf8_str( utf8_size, '\0' );
+			WideCharToMultiByte( CP_UTF8, 0, utf16_str.c_str( ),
+				utf16_str.length( ), &utf8_str[ 0 ], utf8_size,
+				nullptr, nullptr );
+
+			if ( Selectable( utf8_str.c_str( ), selected,
 				ImGuiSelectableFlags_DontClosePopups ) )
 			{
 				const bool multiSelect =
@@ -856,31 +876,40 @@ inline void ImGui::FileBrowser::UpdateFileRecords( )
 	for ( auto& p : std::filesystem::directory_iterator( pwd_ ) )
 	{
 		FileRecord rcd;
-
-		if ( p.is_regular_file( ) )
+		try
 		{
+			if ( p.is_regular_file( ) )
+			{
+				rcd.isDir = false;
+			}
+			else if ( p.is_directory( ) )
+			{
+				rcd.isDir = true;
+			}
+			else
+			{
+				continue;
+			}
+
+			rcd.name = p.path( ).filename( );
+			if ( rcd.name.empty( ) )
+			{
+				continue;
+			}
+
+			rcd.extension = p.path( ).filename( ).extension( );
+
+			rcd.showName = ( rcd.isDir ? "[Dir] " : "[File] " ) +
+				( p.path( ).filename( ).string( ) );
+			fileRecords_.push_back( rcd );
+		}
+		catch ( ... )
+		{
+			rcd.name = "error name";
+			rcd.showName = "error name";
 			rcd.isDir = false;
+			fileRecords_.push_back( rcd );
 		}
-		else if ( p.is_directory( ) )
-		{
-			rcd.isDir = true;
-		}
-		else
-		{
-			continue;
-		}
-
-		rcd.name = p.path( ).filename( );
-		if ( rcd.name.empty( ) )
-		{
-			continue;
-		}
-
-		rcd.extension = p.path( ).filename( ).extension( );
-
-		rcd.showName = ( rcd.isDir ? "[Dir] " : "[File] " ) +
-			utf16to8( p.path( ).filename( ).wstring( ).c_str( ) );
-		fileRecords_.push_back( rcd );
 	}
 
 	std::sort( fileRecords_.begin( ), fileRecords_.end( ),

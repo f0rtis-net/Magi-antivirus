@@ -98,6 +98,9 @@ void c_winpai_imgui::gui_exec( )
 	fonts::tabs = io.Fonts->AddFontFromMemoryTTF( title_font, sizeof( title_font ), 10.f, &config, io.Fonts->GetGlyphRangesCyrillic( ) );
 	fonts::terms_ico = io.Fonts->AddFontFromMemoryTTF( sys_ico, sizeof( sys_ico ), 50.f, &config, io.Fonts->GetGlyphRangesCyrillic( ) );
 	fonts::def_text = io.Fonts->AddFontFromMemoryTTF( title_font, sizeof( title_font ), 18.f, &config, io.Fonts->GetGlyphRangesCyrillic( ) );
+	fonts::big_text = io.Fonts->AddFontFromMemoryTTF( title_font, sizeof( title_font ), 40.f, &config, io.Fonts->GetGlyphRangesCyrillic( ) );
+	fonts::quarantine = io.Fonts->AddFontFromMemoryTTF( quarantine_icons, sizeof( quarantine_icons ), 15.f, &config, io.Fonts->GetGlyphRangesCyrillic( ) );
+	fonts::hz_shrift = io.Fonts->AddFontFromFileTTF( "C:/windows/fonts/verdana.ttf", 18.f, &config, io.Fonts->GetGlyphRangesCyrillic( ) );
 
 	ImGuiStyle* style = &ImGui::GetStyle( );
 	{
@@ -142,7 +145,14 @@ void c_winpai_imgui::gui_exec( )
 		ImGui_ImplWin32_NewFrame( );
 		ImGui::NewFrame( );
 		{
-			g_menu_framework->main_renderable( );
+			static int init = false;
+			if ( !init )
+			{
+				g_menu_framework->init( );
+				init = true;
+			}
+			else
+				g_menu_framework->main_renderable( );
 		}
 		ImGui::EndFrame( );
 

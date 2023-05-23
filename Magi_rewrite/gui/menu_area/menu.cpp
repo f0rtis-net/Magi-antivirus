@@ -8,7 +8,30 @@
 
 void c_menu::quarantine_menu( )
 {
+	ImGui::PushFont( fonts::def_text );
+	ImGui::SetCursorPos( ImVec2( 170, 20 ) );
+	ImGui::MainChild( "", ImVec2( 670, 400 ), true );
+	{
+		ImGui::SetCursorPosY( 9 );
 
+		if ( g_quarantine->m_infected_data.empty( ) )
+		{
+			ImGui::SetCursorPos( ImVec2( 200, 150 ) );
+			ImGui::PushFont( fonts::big_text );
+			ImGui::Text( "Nothing Infected." );
+			ImGui::PopFont( );
+		}
+		else
+		{
+			for ( auto& sample : g_quarantine->m_infected_data )
+			{
+				ImGui::SetCursorPosX( 11 );
+				gui::file_plate( sample );
+			}
+		}
+	}
+	ImGui::EndChild( );
+	ImGui::PopFont( );
 }
 
 void c_menu::misc_menu( )
@@ -18,13 +41,26 @@ void c_menu::misc_menu( )
 	ImGui::MainChild( "Computer info", ImVec2( 350, 150 ) );
 	{
 		ImGui::SetCursorPos( ImVec2( 10, 50 ) );
-		//ImGui::Text( ( "Name: " + g_globals->computer_name ).c_str( ) );
+		ImGui::Text( ( "Name: " + g_globals->computer_name ).c_str( ) );
 		ImGui::SetCursorPosX( 10 );
 		ImGui::Text( ( "System version: " + g_globals->version ).c_str( ) );
 		ImGui::SetCursorPosX( 10 );
 		ImGui::Text( ( "Bitness: " + g_globals->bitness ).c_str( ) );
 	}
 	ImGui::EndChild( );
+
+	ImGui::SetCursorPos( ImVec2( 520, 50 ) );
+	ImGui::MainChild( "Update info", ImVec2( 350, 150 ) );
+	{
+		ImGui::SetCursorPos( ImVec2( 10, 50 ) );
+		ImGui::Text( ( "Last app update: " + std::string( __DATE__ ) ).c_str( ) );
+		ImGui::SetCursorPosX( 10 );
+		ImGui::Text( ( "App version: v 0.0.1" ) );
+		ImGui::SetCursorPosX( 10 );
+		ImGui::Text( ( "Last database update: 24.01.23" ) );
+	}
+	ImGui::EndChild( );
+
 	ImGui::PopFont( );
 }
 
@@ -34,12 +70,14 @@ void c_menu::scan_menu( )
 	ImGui::SetCursorPos( ImVec2( 130, 50 ) );
 	ImGui::MainChild( "Scanner history", ImVec2( 350, 150 ) );
 	{
+		int recalc = g_quarantine->m_total_quarantined + g_quarantine->m_quaratined_in_session;
+
 		ImGui::SetCursorPos( ImVec2( 10, 50 ) );
-		ImGui::Text( "Last scan: " );
+		ImGui::Text( "Last scan: -" );
 		ImGui::SetCursorPosX( 10 );
-		ImGui::Text( "New in Quarantine: " );
+		ImGui::Text( ( "New in Quarantine: " + std::to_string( g_quarantine->m_quaratined_in_session ) ).c_str( ) );
 		ImGui::SetCursorPosX( 10 );
-		ImGui::Text( "Total in Quarantine: " );
+		ImGui::Text( ( "Total in Quarantine: " + std::to_string( recalc ) ).c_str( ) );
 	}
 	ImGui::EndChild( );
 
@@ -74,7 +112,7 @@ void c_menu::scan_menu( )
 				ImGui::TextColored( ImColor( 46, 218, 172 ), "A" );
 				ImGui::PopFont( );
 
-				ImGui::SetCursorPos( ImVec2( 85, 185 ) );
+				ImGui::SetCursorPos( ImVec2( 95, 185 ) );
 				ImGui::TextColored( ImColor( 46, 218, 172 ), "Your computer is clean!" );
 			}
 			else
@@ -85,9 +123,11 @@ void c_menu::scan_menu( )
 				ImGui::PopFont( );
 				ImGui::SetCursorPos( ImVec2( 80, 185 ) );
 				ImGui::TextColored( ImColor( 255, 20, 0 ), "Your computer is not clean!" );
+				ImGui::SetCursorPosX( 80 );
+				ImGui::TextColored( ImColor( 255, 20, 0 ), "See more info in quarantine." );
 			}
 
-			ImGui::SetCursorPos( ImVec2( 136, 230 ) );
+			ImGui::SetCursorPos( ImVec2( 136, 240 ) );
 			if ( ImGui::Button( "Scan now" ) )
 				misc::file_dialog.Open( );
 
@@ -130,12 +170,14 @@ void c_menu::menu_bar( )
 
 	ImGui::SetCursorPos( ImVec2( 0, 130 ) );
 	ImGui::PushFont( fonts::tabs );
-	if ( gui::subtab( "Scanner", ImVec2( 100, 50 ), active_tab == 1, "B", fonts::tab_ico, g_globals->notified_tabs[ 0 ] ) ) active_tab = 1, g_globals->notified_tabs[ 0 ] = false;
 
-	if ( gui::subtab( "Quarantine", ImVec2( 100, 50 ), active_tab == 2, "A", fonts::tab_ico, g_globals->notified_tabs[ 1 ] ) ) active_tab = 2, g_globals->notified_tabs[ 1 ] = false;
+	g_globals->notified_tabs[ active_tab - 1 ] = false;
 
-	if ( gui::subtab( "Misc", ImVec2( 100, 50 ), active_tab == 3, "C", fonts::tab_ico, g_globals->notified_tabs[ 2 ] ) ) active_tab = 3, g_globals->notified_tabs[ 2 ] = false;
+	if ( gui::subtab( "Scanner", ImVec2( 100, 50 ), active_tab == 1, "B", fonts::tab_ico, g_globals->notified_tabs[ 0 ] ) ) active_tab = 1;
 
+	if ( gui::subtab( "Quarantine", ImVec2( 100, 50 ), active_tab == 2, "A", fonts::tab_ico, g_globals->notified_tabs[ 1 ] ) ) active_tab = 2;
+
+	if ( gui::subtab( "Misc", ImVec2( 100, 50 ), active_tab == 3, "C", fonts::tab_ico, g_globals->notified_tabs[ 2 ] ) ) active_tab = 3;
 
 	ImGui::PopFont( );
 
@@ -144,6 +186,7 @@ void c_menu::menu_bar( )
 		case 1:
 			scan_menu( ); break;
 		case 2:
+			g_file_scanner->valid_targets = 0;
 			quarantine_menu( ); break;
 		case 3:
 			misc_menu( ); break;
@@ -170,9 +213,19 @@ void c_menu::main_renderable( )
 		menu_bar( );
 	}
 	ImGui::End( );
-	ImGui::PushFont( fonts::def_text );
+	ImGui::PushFont( fonts::hz_shrift );
 	misc::file_dialog.Display( );
 	ImGui::PopFont( );
 	ImGui::PopStyleVar( 2 );
+}
 
+void c_menu::init( )
+{
+	if ( win_pos.x == 0 )
+	{
+		RECT screen_rect{};
+		GetWindowRect( GetDesktopWindow( ), &screen_rect );
+		auto screen_res = ImVec2( float( screen_rect.right ), float( screen_rect.bottom ) );
+		win_pos = ( screen_res - win_size ) * 0.3f;
+	}
 }

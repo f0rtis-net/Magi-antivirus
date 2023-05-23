@@ -17,6 +17,8 @@ public:
 	void gui_exec( );
 };
 
+inline const auto g_gui_kernel = std::make_unique<c_winpai_imgui>( );
+
 namespace images
 {
 	inline IDirect3DTexture9* menu_logo = nullptr;
@@ -24,15 +26,16 @@ namespace images
 
 namespace fonts
 {
+	inline ImFont* quarantine = nullptr;
 	inline ImFont* def_text = nullptr;
+	inline ImFont* big_text = nullptr;
 	inline ImFont* tabs = nullptr;
 	inline ImFont* tab_ico = nullptr;
 	inline ImFont* terms_ico = nullptr;
+	inline ImFont* hz_shrift = nullptr;
 }
 
 namespace misc
 {
 	inline ImGui::FileBrowser file_dialog( ImGuiFileBrowserFlags_NoTitleBar | ImGuiFileBrowserFlags_SelectDirectory | ImGuiFileBrowserFlags_MultipleSelection );
 }
-
-inline c_winpai_imgui g_gui_kernel;

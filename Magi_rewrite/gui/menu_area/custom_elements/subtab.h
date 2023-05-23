@@ -103,4 +103,74 @@ namespace gui
 		if ( position >= IM_PI * 1.90f )
 			position = 0.f;
 	}
+
+	void cut_to_bounds_string( std::string& string, int count )
+	{
+		if ( string.size( ) > count )
+		{
+			string = string.substr( 0, count );
+			string += "...";
+		}
+	}
+
+	void file_plate( const quarantine_sample_t& sample )
+	{
+		ImGuiWindow* window = ImGui::GetCurrentWindow( );
+		if ( window->SkipItems )
+			return;
+
+		ImGui::PushID( sample.m_path.c_str( ) );
+		ImGui::BeginChild( "", ImVec2( 645, 35 ), false, NULL );
+		window->DrawList->AddRectFilled( ImGui::GetWindowPos( ), ImGui::GetWindowPos( ) + ImGui::GetWindowSize( ), ImColor( 68, 63, 214, int( 255 * ImGui::GetStyle( ).Alpha ) ), 2.f );
+
+		int pos = sample.m_name.find( ".infq" );
+
+		string sub = sample.m_name.substr( 0, pos );
+
+		cut_to_bounds_string( sub, 15 );
+
+		ImGui::SetCursorPos( ImVec2( 20, 15 - ImGui::CalcTextSize( sub.c_str( ) ).y / 2 ) );
+		ImGui::Text( sub.c_str( ) );
+
+		if ( ImGui::IsItemHovered( ) )
+			ImGui::SetTooltip( sample.m_path.c_str( ) );
+
+		auto type = sample.m_type;
+		cut_to_bounds_string( type, 6 );
+
+		ImGui::SetCursorPos( ImVec2( 200, 15 - ImGui::CalcTextSize( type.c_str( ) ).y / 2 ) );
+		ImGui::Text( type.c_str( ) );
+
+		if ( ImGui::IsItemHovered( ) )
+			ImGui::SetTooltip( sample.m_type.c_str( ) );
+
+		auto path = sample.m_path;
+		cut_to_bounds_string( path, 25 );
+		ImGui::SetCursorPos( ImVec2( 300, 15 - ImGui::CalcTextSize( path.c_str( ) ).y / 2 ) );
+		ImGui::Text( path.c_str( ) );
+
+		if ( ImGui::IsItemHovered( ) )
+			ImGui::SetTooltip( sample.m_path.c_str( ) );
+
+		ImGui::SetCursorPos( ImVec2( 550, 5 ) );
+		ImGui::PushFont( fonts::quarantine );
+
+		if ( ImGui::Button( "D" ) )
+			g_quarantine->remove_from_quarantine( sample, true );
+		ImGui::PopFont( );
+		if ( ImGui::IsItemHovered( ) )
+			ImGui::SetTooltip( "Remove file from computer" );
+
+		ImGui::SameLine( 0.0f, 15.f );
+		ImGui::PushFont( fonts::quarantine );
+		if ( ImGui::Button( "R" ) )
+			g_quarantine->remove_from_quarantine( sample, false );
+		ImGui::PopFont( );
+		if ( ImGui::IsItemHovered( ) )
+			ImGui::SetTooltip( "Recover file" );
+
+
+		ImGui::EndChild( );
+		ImGui::PopID( );
+	}
 }
